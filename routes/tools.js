@@ -16,9 +16,9 @@ router.post('/tools',function (req,res, next) {
 
 });
 
-//爬取企查查信息
-const qcc = require("./qichacha")
-router.get('/qcc',async (req,res,next) => {
+//爬取天眼查信息
+const tyc = require("./tianyancha");
+router.get('/tyc',async (req,res,next) => {
 
     let param = req.query || req.body;
     let companyName = param.name;
@@ -30,7 +30,7 @@ router.get('/qcc',async (req,res,next) => {
     }
     else
     {
-        let orgInfo = await qcc.getOrgInfo(companyName);
+        let orgInfo = await tyc.getOrgInfo(companyName);
         if (orgInfo)
         {
             util.printJson(res, 0, "获取公司信息成功", orgInfo);

@@ -7,7 +7,7 @@ module.exports = {
         let emulateType = devices['iPhone 6'];
 
         //天眼查
-        let qccUrl = "https://m.tianyancha.com/";
+        let tycUrl = "https://m.tianyancha.com/";
         //  调测
         //const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox'],devtools:true});
         const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
@@ -15,9 +15,8 @@ module.exports = {
         try {
             const page = await browser.newPage();
             await page.emulate(emulateType);
-            await page.goto(qccUrl);
+            await page.goto(tycUrl);
             //await page.screenshot({path:'1.png'});
-            //let companyMd5 = md5(companyName);
 
             //输入公司名称搜索
             await page.type('#live-search', companyName, {delay: 0});
@@ -42,7 +41,7 @@ module.exports = {
 
                         let item = element.querySelector(".clearfix .search-name").children;
                         const _companyUrl = item[0].href;
-                        const _companyName =  item[0].innerText;
+                        const _companyName = item[0].innerText;
                         console.log("_companyName==", _companyName);
                         if (_companyName === companyName) {
                             return _companyUrl;
@@ -65,13 +64,10 @@ module.exports = {
                 }
                 const companyInfo = await page.evaluate(() => {
                     const _companyInfo = {};
-                    // _companyInfo.address = document.querySelector('.address').innerText;
-                    // _companyInfo.telephone = document.querySelector('.phone').innerText;
                     let companyInfoItemElements = document.querySelectorAll('.content-container.pb10')[0].children;
                     for (const element of companyInfoItemElements) {
                         const _itemLabel = element.children[0].innerText;
                         const _itemValue = element.children[1].innerText;
-                        //console.log("_itemValue:"+_itemValue);
                         if (_itemLabel === '工商注册号：') {
                             _companyInfo.account = _itemValue;
                         }
@@ -116,7 +112,7 @@ module.exports = {
 
         } catch (e) {
             await browser.close();
-            console.log("查询企查查接口异常:", e);
+            console.log("查询天眼查接口异常:", e);
             return null;
 
         }
